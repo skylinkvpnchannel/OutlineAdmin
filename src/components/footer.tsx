@@ -13,7 +13,7 @@ export const Footer = () => {
       </div>
 
       <div className="text-xs text-default-500">
-        © {new Date().getFullYear()} Outline Admin
+        © {new Date().getFullYear()} Outline Dashboard
       </div>
     </footer>
   );
