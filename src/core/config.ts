@@ -12,7 +12,7 @@ export const LOGIN_ROUTE = "/";
 export const HOME_ROUTE = "/servers";
 
 export const app = {
-    name: "Outline Admin",
+    name: "Outline Dashboard",
     description:
         "Outline Admin is a web interface for the Outline Manager API, providing a simple and user-friendly UI for managing VPN servers.",
 
