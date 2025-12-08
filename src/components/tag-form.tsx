@@ -65,11 +65,13 @@ export default function TagForm({ tag }: Props) {
             <MessageModal
                 body={
                     <div className="grid gap-2">
-                        <pre className="text-sm break-words whitespace-pre-wrap text-danger-500">{errorMessage}</pre>
+                        <pre className="text-sm break-words whitespace-pre-wrap text-danger-500">
+                            {errorMessage}
+                        </pre>
                     </div>
                 }
                 disclosure={errorModalDisclosure}
-                title="Error!"
+                title="အမှား!"
             />
             <div className="grid gap-6 w-full">
                 <section className="flex justify-start items-center gap-2">
@@ -79,7 +81,7 @@ export default function TagForm({ tag }: Props) {
                         </Button>
                     </Tooltip>
 
-                    <h1 className="text-xl">{tag ? "Edit Tag" : "New Tag"}</h1>
+                    <h1 className="text-xl">{tag ? "Tag ပြင်မယ်" : "Tag အသစ်ထည့်မယ်"}</h1>
                 </section>
 
                 <form className="w-full max-w-[464px] grid gap-4" onSubmit={handleSubmit(actualSubmit)}>
@@ -87,11 +89,11 @@ export default function TagForm({ tag }: Props) {
                         color="primary"
                         errorMessage={formState.errors.name?.message}
                         isInvalid={!!formState.errors.name}
-                        label="Name"
-                        placeholder="e.g. Irancell"
+                        label="အမည်"
+                        placeholder="ဥပမာ - Irancell"
                         variant="underlined"
                         {...register("name", {
-                            required: "The name is required"
+                            required: "အမည်ထည့်ဖို့ လိုပါတယ်"
                         })}
                     />
 
@@ -101,7 +103,7 @@ export default function TagForm({ tag }: Props) {
                         type="submit"
                         variant="shadow"
                     >
-                        Save
+                        သိမ်းမယ်
                     </Button>
                 </form>
             </div>
