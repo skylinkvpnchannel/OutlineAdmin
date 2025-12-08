@@ -80,7 +80,7 @@ export default function NotificationChannelForm({ channel }: Props) {
 
             if (result.ok) {
                 addToast({
-                    title: "Success",
+                    title: "အောင်မြင်ပါတယ်",
                     description: result.message,
                     color: "success"
                 });
@@ -149,17 +149,20 @@ export default function NotificationChannelForm({ channel }: Props) {
                     </div>
                 }
                 disclosure={errorModalDisclosure}
-                title="Error!"
+                title="အမှား!"
             />
+
             <div className="grid gap-6 w-full">
                 <section className="flex justify-start items-center gap-2">
-                    <Tooltip closeDelay={100} color="default" content="Notification channels" delay={600} size="sm">
+                    <Tooltip closeDelay={100} color="default" content="Notification Channels" delay={600} size="sm">
                         <Button isIconOnly as={Link} href="/notification-channels" size="sm" variant="light">
                             <ArrowLeftIcon size={20} />
                         </Button>
                     </Tooltip>
 
-                    <h1 className="text-xl">{channel ? "Edit Notification Channel" : "New Notification Channel"}</h1>
+                    <h1 className="text-xl">
+                        {channel ? "Notification Channel ပြင်မယ်" : "Notification Channel အသစ် ထည့်မယ်"}
+                    </h1>
                 </section>
 
                 <form className="w-full max-w-[464px] grid gap-4" onSubmit={handleSubmit(actualSubmit)}>
@@ -167,11 +170,11 @@ export default function NotificationChannelForm({ channel }: Props) {
                         color="primary"
                         errorMessage={formState.errors.name?.message}
                         isInvalid={!!formState.errors.name}
-                        label="Channel name"
-                        placeholder="e.g. My Telegram"
+                        label="Channel အမည်"
+                        placeholder="ဥပမာ - My Telegram"
                         variant="underlined"
                         {...register("name", {
-                            required: "The name is required"
+                            required: "Channel အမည်ထည့်ပါ"
                         })}
                     />
 
@@ -181,7 +184,7 @@ export default function NotificationChannelForm({ channel }: Props) {
                         render={({ field }) => (
                             <RadioGroup
                                 defaultValue={channel?.type ?? "None"}
-                                label="Notification type"
+                                label="Notification အမျိုးအစား"
                                 value={field.value}
                                 onChange={field.onChange}
                             >
@@ -198,7 +201,7 @@ export default function NotificationChannelForm({ channel }: Props) {
                     {selectedType === "Telegram" && (
                         <div className="grid gap-2">
                             <div className="text-sm text-foreground-500 flex justify-between gap-2 items-center">
-                                <span>Configuration</span>
+                                <span>Configuration (သတ်မှတ်ချက်များ)</span>
                                 <Button
                                     isDisabled={formState.isSubmitting || formState.isSubmitSuccessful}
                                     isLoading={isTesting}
@@ -206,36 +209,37 @@ export default function NotificationChannelForm({ channel }: Props) {
                                     variant="light"
                                     onPress={handleTest}
                                 >
-                                    Test
+                                    စမ်းသပ်မယ်
                                 </Button>
                             </div>
 
                             <div>
                                 {selectedType === "Telegram" && (
                                     <Alert color="warning" variant="flat">
-                                        If Telegram is blocked in the region where your server is hosted, you may
-                                        experience issues sending notifications through the Telegram API. To resolve
-                                        this, consider using a proxy such as{" "}
+                                        သင့် Server တင်ထားတဲ့ Region မှာ Telegram ကို ပိတ်ထားတယ်ဆိုရင် Telegram API ကနေ
+                                        Notification ပို့ရာမှာ အခက်အခဲရှိနိုင်ပါတယ်။  
+                                        အဲ့ဒါ ဖြေရှင်းဖို့ Proxy တစ်ခုသုံးနိုင်ပါတယ် — ဥပမာ{" "}
                                         <Link
                                             className="text-warning font-black contents"
                                             href={app.links.myTelegramApiProxyWorkerRepo}
                                             target="_blank"
                                         >
-                                            Telegram API Proxy via Cloudflare Worker
+                                            Cloudflare Worker နဲ့ Telegram API Proxy
                                         </Link>
-                                        .
+                                        ။
                                     </Alert>
                                 )}
+
                                 <Input
                                     color="primary"
                                     defaultValue="https://api.telegram.org"
                                     errorMessage={formState.errors.telegramApiUrl?.message}
                                     isInvalid={!!formState.errors.telegramApiUrl}
                                     label="Telegram API URL"
-                                    placeholder="e.g. https://api.telegram.org"
+                                    placeholder="ဥပမာ - https://api.telegram.org"
                                     variant="underlined"
                                     {...register("telegramApiUrl", {
-                                        required: "API URL is required",
+                                        required: "API URL ထည့်ပါ",
                                         setValueAs: (v) => v?.replace(/\/+$/, "")
                                     })}
                                 />
@@ -245,30 +249,31 @@ export default function NotificationChannelForm({ channel }: Props) {
                                 color="primary"
                                 errorMessage={formState.errors.telegramBotToken?.message}
                                 isInvalid={!!formState.errors.telegramBotToken}
-                                label="Bot token"
-                                placeholder="e.g. 7049328752:AAE20ro04o0XApJ0yuesd12t5e8w41s55ck"
+                                label="Bot Token"
+                                placeholder="ဥပမာ - 7049328752:AAE20ro04o0XApJ0yuesd12t5e8w41s55ck"
                                 variant="underlined"
                                 {...register("telegramBotToken", {
-                                    required: "Bot token is required"
+                                    required: "Bot token ထည့်ပါ"
                                 })}
                             />
+
                             <Input
                                 color="primary"
                                 errorMessage={formState.errors.telegramChatId?.message}
                                 isInvalid={!!formState.errors.telegramChatId}
                                 label="Chat ID"
-                                placeholder="e.g. 1234401001"
+                                placeholder="ဥပမာ - 1234401001"
                                 variant="underlined"
-                                {...register("telegramChatId", { required: "Chat ID is required" })}
+                                {...register("telegramChatId", { required: "Chat ID ထည့်ပါ" })}
                             />
 
                             <Textarea
                                 color="primary"
-                                description="Available placeholders: {{serverName}} {{serverHostnameOrIp}} {{errorMessage}}"
+                                description="အသုံးပြုလို့ရတဲ့ placeholders: {{serverName}} {{serverHostnameOrIp}} {{errorMessage}}"
                                 errorMessage={formState.errors.telegramMessageTemplate?.message}
                                 isInvalid={!!formState.errors.telegramMessageTemplate}
                                 label="Message template (Markdown)"
-                                placeholder={`e.g. ${app.defaultTelegramNotificationTemplate}`}
+                                placeholder={`ဥပမာ - ${app.defaultTelegramNotificationTemplate}`}
                                 variant="underlined"
                                 {...register("telegramMessageTemplate")}
                             />
@@ -282,7 +287,7 @@ export default function NotificationChannelForm({ channel }: Props) {
                         type="submit"
                         variant="shadow"
                     >
-                        Save
+                        သိမ်းမယ်
                     </Button>
                 </form>
             </div>
