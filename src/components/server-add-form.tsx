@@ -34,12 +34,12 @@ export default function ServerAddForm() {
             <MessageModal
                 body={
                     <div className="grid gap-2">
-                        <span>Could not add server. Something went wrong.</span>
+                        <span>Server ကို ထည့်မရပါ။ တစ်ခုခုမှားယွင်းနေပါတယ်။</span>
                         <pre className="text-sm break-words whitespace-pre-wrap text-danger-500">{serverError}</pre>
                     </div>
                 }
                 disclosure={updateErrorModalDisclosure}
-                title="Server Error!"
+                title="Server အမှား!"
             />
 
             <div className="grid gap-6">
@@ -50,15 +50,15 @@ export default function ServerAddForm() {
                         </Button>
                     </Tooltip>
 
-                    <h1 className="text-xl">Add Outline Server</h1>
+                    <h1 className="text-xl">Outline Server ထည့်မယ်</h1>
                 </section>
 
                 <section className="p-2 grid gap-2">
                     <Tabs>
-                        <Tab title="New Server">
+                        <Tab title="Server အသစ်">
                             <div className="grid gap-2">
                                 <p className="text-sm text-default-500 ">
-                                    Log into your VPN server and run this command
+                                    VPN Server ထဲကို ဝင်ပြီး ဒီ command ကို run လိုက်ပါ
                                 </p>
                                 <Snippet
                                     classNames={{
@@ -72,10 +72,10 @@ export default function ServerAddForm() {
                             </div>
                         </Tab>
 
-                        <Tab title="Existing Server">
+                        <Tab title="Server ရှိပြီးသား">
                             <div className="grid gap-2">
                                 <p className="text-sm text-default-500">
-                                    Log into your VPN server and run this command
+                                    VPN Server ထဲကို ဝင်ပြီး ဒီ command ကို run လိုက်ပါ
                                 </p>
                                 <Snippet
                                     classNames={{
@@ -95,7 +95,7 @@ export default function ServerAddForm() {
                     <form className="grid gap-4" onSubmit={form.handleSubmit(actualSubmit)}>
                         <Input
                             color="primary"
-                            label="Paste your installation output here"
+                            label="Install လုပ်ပြီးထွက်လာတဲ့ output ကို ဒီမှာကူးထည့်ပါ"
                             placeholder={app.snippets.exampleServerManagementJson}
                             required={true}
                             variant="underlined"
@@ -115,7 +115,7 @@ export default function ServerAddForm() {
                                 type="submit"
                                 variant="shadow"
                             >
-                                Add
+                                ထည့်မယ်
                             </Button>
                         </div>
                     </form>
