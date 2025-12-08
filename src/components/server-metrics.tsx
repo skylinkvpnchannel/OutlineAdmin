@@ -1,6 +1,17 @@
 "use client";
 
-import { Alert, Button, Card, CardBody, CardHeader, Chip, Divider, Link, Skeleton, Tooltip } from "@heroui/react";
+import {
+    Alert,
+    Button,
+    Card,
+    CardBody,
+    CardHeader,
+    Chip,
+    Divider,
+    Link,
+    Skeleton,
+    Tooltip
+} from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Server } from "@prisma/client";
@@ -49,7 +60,7 @@ export default function ServerMetrics({ server }: Props) {
         <>
             <div className="grid gap-6">
                 <section className="flex justify-start items-center gap-2">
-                    <Tooltip closeDelay={100} color="default" content="Back" delay={600} size="sm">
+                    <Tooltip closeDelay={100} color="default" content="နောက်သို့" delay={600} size="sm">
                         <Button
                             as={Link}
                             href={returnUrl ? returnUrl : "/servers"}
@@ -62,22 +73,22 @@ export default function ServerMetrics({ server }: Props) {
                     </Tooltip>
 
                     <h1 className="text-xl break-word">
-                        {server.name} ({server.hostnameOrIp}) Metrics
+                        {server.name} ({server.hostnameOrIp}) မက်ထရစ်များ
                     </h1>
                 </section>
 
                 <section className="grid gap-4 xl:px-4">
                     <p className="text-foreground-500">
-                        We are committed to protecting the privacy and security of our users. Each Outline server
-                        automatically collects aggregated and anonymized usage data. This data does not include
-                        information about the websites users visit or their communications. It is also not shared with
-                        the Outline team unless you, as the server administrator, explicitly opt in to sharing.{" "}
+                        ကျွန်တော်တို့က သုံးစွဲသူ들의 ကိုယ်ရေးကိုယ်တာလုံခြုံရေးနဲ့ အချက်အလက်လုံခြုံရေးကို အလွန်အရေးပါပြီး ကာကွယ်ထားပါတယ်။
+                        Outline Server တိုင်းက သုံးစွဲမှုအချက်အလက်တွေကို စုစည်းပြီး အမည်မဖော်နိုင်တဲ့ပုံစံနဲ့ အလိုအလျောက်ရယူထားပါတယ်။
+                        ဒီအချက်အလက်တွေထဲမှာ သုံးစွဲသူတွေ သွားရောက်တဲ့ ဝဘ်ဆိုဒ်တွေ၊ သူတို့ရဲ့ ဆက်သွယ်ရေးအကြောင်းအရာတွေ မပါဝင်ပါဘူး။
+                        ထို့အပြင် Server Admin အနေနဲ့ မင်းက ကိုယ်တိုင် မျှဝေဖို့ ရွေးချယ်မှသာ Outline အဖွဲ့နဲ့ မျှဝေသွားမှာပါ။{" "}
                         <Link href={app.links.outlineVpn.dataCollectionPolicy} target="_blank">
-                            Learn more
+                            ပိုမိုလေ့လာရန်
                         </Link>
                     </p>
 
-                    {hasNoData && <Alert color="danger">Failed to fetch server metrics.</Alert>}
+                    {hasNoData && <Alert color="danger">Server မက်ထရစ်များကို မရယူနိုင်ပါ။</Alert>}
 
                     {isLoading && (
                         <div className="grid gap-4">
@@ -169,7 +180,7 @@ export default function ServerMetrics({ server }: Props) {
                             <Card className="bg-content2 dark:bg-content1" shadow="none">
                                 <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                                     <Card className="bg-transparent" shadow="none">
-                                        <CardHeader>Total bandwidth usage (last 30 days)</CardHeader>
+                                        <CardHeader>စုစုပေါင်း Bandwidth သုံးစွဲမှု (နောက်ဆုံး ၃၀ ရက်)</CardHeader>
 
                                         <CardBody className="grid gap-2">
                                             <Chip color="primary" size="lg" variant="flat">
@@ -177,8 +188,7 @@ export default function ServerMetrics({ server }: Props) {
                                             </Chip>
 
                                             <span className="text-foreground-400 text-sm">
-                                                This shows the total amount of data transferred through the server over
-                                                the past 30 days.
+                                                ဒီအပိုင်းက နောက်ဆုံး ၃၀ ရက်အတွင်း Server မှတစ်ဆင့် လွှဲပြောင်းသွားတဲ့ data စုစုပေါင်းကို ပြထားတာပါ။
                                             </span>
                                         </CardBody>
                                     </Card>
@@ -187,7 +197,7 @@ export default function ServerMetrics({ server }: Props) {
 
                                     <Card className="bg-content2 dark:bg-content1" shadow="none">
                                         <CardHeader className="flex justify-between gap-2">
-                                            <span>Current bandwidth usage</span>
+                                            <span>လက်ရှိ Bandwidth သုံးစွဲမှု</span>
                                             <Chip color="primary" size="sm" variant="dot">
                                                 {formatBytes(metrics!.server.bandwidth.current.data.bytes)}/s
                                             </Chip>
@@ -208,7 +218,7 @@ export default function ServerMetrics({ server }: Props) {
                                 <Divider className="bg-content3 dark:bg-content3/40 my-4" />
 
                                 <Card className="bg-transparent" shadow="none">
-                                    <CardHeader>ASes with most bandwidth usage (last 30 days)</CardHeader>
+                                    <CardHeader>Bandwidth အများဆုံးသုံးတဲ့ AS များ (နောက်ဆုံး ၃၀ ရက်)</CardHeader>
 
                                     <CardBody>
                                         <div className="flex flex-wrap w-full gap-2">
@@ -241,7 +251,7 @@ export default function ServerMetrics({ server }: Props) {
 
                             <Card className="bg-content2 dark:bg-content1" shadow="none">
                                 <Card className="bg-transparent" shadow="none">
-                                    <CardHeader>Total Tunnel Time (last 30 days)</CardHeader>
+                                    <CardHeader>စုစုပေါင်း Tunnel Time (နောက်ဆုံး ၃၀ ရက်)</CardHeader>
 
                                     <CardBody className="grid gap-2">
                                         <Chip color="primary" size="lg" variant="flat">
@@ -253,7 +263,7 @@ export default function ServerMetrics({ server }: Props) {
                                 <Divider className="bg-content3 dark:bg-content3/40 my-4" />
 
                                 <Card className="bg-transparent" shadow="none">
-                                    <CardHeader>ASes with highest Tunnel Time (last 30 days)</CardHeader>
+                                    <CardHeader>Tunnel Time အများဆုံးရှိတဲ့ AS များ (နောက်ဆုံး ၃၀ ရက်)</CardHeader>
 
                                     <CardBody className="grid gap-2">
                                         <div className="flex flex-wrap w-full gap-2">
