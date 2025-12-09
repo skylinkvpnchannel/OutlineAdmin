@@ -1,7 +1,14 @@
 "use client";
 
 import { UseDisclosureReturn } from "@heroui/use-disclosure";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader
+} from "@heroui/react";
 import { ReactNode, useState } from "react";
 
 interface Props {
@@ -9,8 +16,10 @@ interface Props {
     title?: string | ReactNode;
     body?: string | ReactNode;
     confirmLabel?: string;
+    cancelLabel?: string;
     isDismissable?: boolean;
     onConfirm?: CallableFunction;
+    confirmColor?: "danger" | "primary" | "secondary" | "success" | "warning" | "default";
 }
 
 export default function ConfirmModal({
@@ -19,9 +28,21 @@ export default function ConfirmModal({
     body,
     isDismissable = false,
     confirmLabel,
-    onConfirm = () => {}
+    cancelLabel = "မလုပ်တော့ဘူး",
+    onConfirm = () => {},
+    confirmColor = "danger"
 }: Props) {
-    const [isPerformingIntendedAction, setIsPerformingIntendedAction] = useState<boolean>(false);
+    const [isPerformingIntendedAction, setIsPerformingIntendedAction] = useState(false);
+
+    const handleConfirm = async () => {
+        try {
+            setIsPerformingIntendedAction(true);
+            await onConfirm();
+            disclosure.onClose();
+        } finally {
+            setIsPerformingIntendedAction(false);
+        }
+    };
 
     return (
         <Modal
@@ -30,27 +51,51 @@ export default function ConfirmModal({
             isKeyboardDismissDisabled={!isDismissable}
             isOpen={disclosure.isOpen}
             onOpenChange={disclosure.onOpenChange}
+            placement="center"
+            backdrop="blur"
+            classNames={{
+                base: "rounded-2xl shadow-2xl border border-default-200/60 bg-content1/95",
+                header: "pb-2",
+                body: "pt-2",
+                footer: "pt-2"
+            }}
         >
             <ModalContent>
-                {title && <ModalHeader>{title}</ModalHeader>}
-                {body && <ModalBody>{body}</ModalBody>}
-                <ModalFooter className="flex justify-between gap-2 mt-4">
-                    <Button isDisabled={isPerformingIntendedAction} variant="flat" onPress={disclosure.onClose}>
-                        Cancel
+                {title && (
+                    <ModalHeader className="flex items-center gap-2">
+                        <div className="grid">
+                            <div className="text-lg font-semibold">{title}</div>
+                            <div className="text-xs text-default-500">
+                                အတည်ပြုရန် လိုပါသည်
+                            </div>
+                        </div>
+                    </ModalHeader>
+                )}
+
+                {body && (
+                    <ModalBody className="text-sm text-foreground-600 grid gap-2">
+                        {body}
+                    </ModalBody>
+                )}
+
+                <ModalFooter className="flex justify-end gap-2 mt-4">
+                    <Button
+                        isDisabled={isPerformingIntendedAction}
+                        variant="light"
+                        className="rounded-xl"
+                        onPress={disclosure.onClose}
+                    >
+                        {cancelLabel}
                     </Button>
 
                     <Button
-                        color="danger"
+                        color={confirmColor}
                         isLoading={isPerformingIntendedAction}
                         variant="shadow"
-                        onPress={async () => {
-                            setIsPerformingIntendedAction((prev) => !prev);
-                            await onConfirm();
-                            setIsPerformingIntendedAction((prev) => !prev);
-                            disclosure.onClose();
-                        }}
+                        className="rounded-xl font-semibold"
+                        onPress={handleConfirm}
                     >
-                        {confirmLabel ?? "Ok"}
+                        {confirmLabel ?? "အိုကေ"}
                     </Button>
                 </ModalFooter>
             </ModalContent>
