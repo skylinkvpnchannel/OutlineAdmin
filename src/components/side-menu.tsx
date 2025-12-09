@@ -3,9 +3,10 @@
 import NextLink from "next/link";
 import React from "react";
 import { usePathname } from "next/navigation";
-import { Button, useDisclosure } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { useForm } from "react-hook-form";
 import { UseDisclosureReturn } from "@heroui/use-disclosure";
+import { motion } from "framer-motion";
 
 import {
   BellIcon,
@@ -59,7 +60,6 @@ interface Props {
 
 export const SideMenu = ({ drawerDisclosure }: Props) => {
   const currentPathname = usePathname();
-  useDisclosure(); // future use, now safe to keep
   const logoutForm = useForm();
 
   const handleLogout = async () => {
@@ -71,73 +71,138 @@ export const SideMenu = ({ drawerDisclosure }: Props) => {
   };
 
   return (
-    <div className="flex flex-col justify-between gap-2 h-screen w-[300px] bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-800 xl:fixed text-gray-900 dark:text-gray-100">
+    <aside
+      className="
+        relative h-screen w-[280px] sm:w-[300px]
+        xl:fixed
+        flex flex-col justify-between
+        text-foreground
+        border-r border-white/10 dark:border-slate-800
+        bg-white/70 dark:bg-slate-950/60
+        backdrop-blur-xl
+        shadow-xl
+      "
+    >
+      {/* soft gradient background */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -top-20 -left-24 w-72 h-72 bg-emerald-400/10 blur-3xl rounded-full" />
+        <div className="absolute top-1/3 -right-24 w-72 h-72 bg-cyan-400/10 blur-3xl rounded-full" />
+        <div className="absolute bottom-0 left-1/4 w-72 h-72 bg-purple-400/10 blur-3xl rounded-full" />
+      </div>
+
       {/* Top */}
-      <div className="mt-6 px-4">
-        <div className="grid gap-3">
-          <NextLink
-            className="w-fit justify-self-center flex flex-col items-center gap-2"
-            href="/"
-            onClick={handleDrawerClose}
+      <div className="relative mt-6 px-4">
+        {/* Logo + app name */}
+        <NextLink
+          className="w-full flex flex-col items-center gap-2"
+          href="/"
+          onClick={handleDrawerClose}
+        >
+          <motion.div
+            animate={{ y: [0, -5, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            className="relative grid place-items-center w-16 h-16 rounded-2xl bg-white/60 dark:bg-white/5 border border-white/20 dark:border-white/10"
           >
-            <Logo size={56} />
-            <p className="font-bold tracking-wide">
+            <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-emerald-400/25 via-cyan-400/20 to-purple-400/20 blur-lg" />
+            <Logo size={52} />
+          </motion.div>
+
+          <div className="grid place-items-center">
+            <p className="font-extrabold tracking-wider text-lg">
               {app.name.toUpperCase()}
             </p>
-          </NextLink>
-
-          <div className="flex items-center justify-center">
-            <ThemeSwitch />
+            <p className="text-xs text-foreground-500">
+              Admin Dashboard
+            </p>
           </div>
+        </NextLink>
+
+        {/* Theme Switch */}
+        <div className="flex items-center justify-center mt-4">
+          <ThemeSwitch />
         </div>
 
-        <nav className="grid gap-2 mt-8">
-          {menuItems.map((item) => {
+        {/* Navigation */}
+        <nav className="grid gap-1.5 mt-8">
+          {menuItems.map((item, idx) => {
             const active = currentPathname.startsWith(item.pathName);
-            return (
-              <NextLink
-                key={item.pathName}
-                href={item.pathName}
-                onClick={handleDrawerClose}
-                className={[
-                  "flex items-center gap-3 px-3 py-2 rounded-xl transition",
-                  active
-                    ? "bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-300"
-                    : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-slate-800",
-                ].join(" ")}
-              >
-                <div className="shrink-0">{item.icon}</div>
 
-                {/* English + Myanmar labels */}
-                <div className="flex flex-col leading-tight">
-                  <span className="font-medium">{item.label}</span>
-                  <span className="text-xs opacity-70">{item.subLabel}</span>
-                </div>
-              </NextLink>
+            return (
+              <motion.div
+                key={item.pathName}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.04 }}
+              >
+                <NextLink
+                  href={item.pathName}
+                  onClick={handleDrawerClose}
+                  className={[
+                    "group relative flex items-center gap-3 px-3 py-2.5 rounded-2xl transition-all",
+                    active
+                      ? "bg-gradient-to-r from-emerald-500/15 via-cyan-500/10 to-transparent text-emerald-700 dark:text-emerald-200"
+                      : "hover:bg-black/5 dark:hover:bg-white/5 text-foreground-700 dark:text-foreground-200",
+                  ].join(" ")}
+                >
+                  {/* active left glow bar */}
+                  {active && (
+                    <span className="absolute left-1 top-1.5 bottom-1.5 w-1 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.9)]" />
+                  )}
+
+                  {/* icon bubble */}
+                  <div
+                    className={[
+                      "shrink-0 grid place-items-center w-9 h-9 rounded-xl transition",
+                      active
+                        ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300"
+                        : "bg-black/5 dark:bg-white/5 group-hover:bg-emerald-500/10",
+                    ].join(" ")}
+                  >
+                    {item.icon}
+                  </div>
+
+                  {/* English + Myanmar labels */}
+                  <div className="flex flex-col leading-tight">
+                    <span className="font-semibold text-sm">
+                      {item.label}
+                    </span>
+                    <span className="text-[11px] opacity-70">
+                      {item.subLabel}
+                    </span>
+                  </div>
+
+                  {/* subtle arrow on hover */}
+                  <span className="ml-auto opacity-0 group-hover:opacity-70 transition text-xs">
+                    →
+                  </span>
+                </NextLink>
+              </motion.div>
             );
           })}
         </nav>
       </div>
 
       {/* Bottom */}
-      <div className="p-4 grid gap-3">
+      <div className="relative p-4 grid gap-3">
         <form onSubmit={logoutForm.handleSubmit(handleLogout)}>
           <Button
             color="danger"
             fullWidth
             isLoading={logoutForm.formState.isSubmitting}
             type="submit"
-            variant="flat"
+            radius="lg"
+            variant="shadow"
+            className="bg-gradient-to-r from-rose-500 to-red-600 text-white"
           >
             Logout
           </Button>
         </form>
 
-        <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
-              © {new Date().getFullYear()} Outline Dashboard
+        <div className="text-[11px] text-foreground-500 text-center">
+          © {new Date().getFullYear()} Outline Dashboard
         </div>
       </div>
-    </div>
+    </aside>
   );
 };
 
