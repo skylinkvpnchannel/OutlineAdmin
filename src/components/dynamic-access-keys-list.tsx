@@ -113,33 +113,35 @@ export default function DynamicAccessKeysList() {
         <>
             <DynamicAccessKeyModal disclosure={dynamicAccessKeyModalDisclosure} value={getCurrentAccessKeyUrl()} />
 
+            {/* Delete Confirm */}
             <ConfirmModal
                 body={
                     <div className="grid gap-2">
-                        <span>Are you sure you want to Delete this dynamic access key?</span>
+                        <span>ဒီ Dynamic Access Key ကို ဖျက်ချင်တာ သေချာလား?</span>
                         <p className="text-foreground-500 text-sm whitespace-pre-wrap break-all">
                             {getCurrentAccessKeyUrl()}
                         </p>
                     </div>
                 }
-                confirmLabel="Delete"
+                confirmLabel="ဖျက်မယ်"
                 disclosure={deleteConfirmModalDisclosure}
-                title="Delete Dyanmic Access Key"
+                title="Dynamic Access Key ဖျက်မယ်"
                 onConfirm={handleDelete}
             />
 
+            {/* Reset Confirm */}
             <ConfirmModal
                 body={
                     <div className="grid gap-2">
-                        <span>Are you sure you want to reset this dynamic access key?</span>
+                        <span>ဒီ Dynamic Access Key ကို Reset လုပ်ချင်တာ သေချာလား?</span>
                         <p className="text-foreground-500 text-sm whitespace-pre-wrap break-all">
-                            This action will set the data usage to 0 and the usage start date to null.
+                            ဒီလုပ်ဆောင်ချက်က Data Usage ကို 0 ပြန်ထားပြီး Usage Start Date ကိုလည်း ပြန်ဖျက်ပစ်ပါလိမ့်မယ်။
                         </p>
                     </div>
                 }
-                confirmLabel="Reset"
+                confirmLabel="Reset လုပ်မယ်"
                 disclosure={resetConfirmModalDisclosure}
-                title="Reset Dyanmic Access Key"
+                title="Dynamic Access Key Reset"
                 onConfirm={handleReset}
             />
 
@@ -147,7 +149,7 @@ export default function DynamicAccessKeysList() {
                 <div className="flex gap-2 items-center">
                     <h1 className="text-xl">Dynamic Access Keys</h1>
 
-                    <Tooltip content="Read more about dynamic access keys">
+                    <Tooltip content="Dynamic Access Key အကြောင်း ဖတ်ရန်">
                         <Link href={app.links.outlineVpn.dynamicAccessKeys} target="_blank">
                             <InfoIcon size={20} />
                         </Link>
@@ -160,7 +162,7 @@ export default function DynamicAccessKeysList() {
                     <form onSubmit={searchForm.handleSubmit(handleSearch)}>
                         <Input
                             className="w-fit"
-                            placeholder="Name [+Enter]"
+                            placeholder="နာမည်နဲ့ ရှာရန် [+Enter]"
                             startContent={<>🔍</>}
                             variant="faded"
                             {...searchForm.register("term")}
@@ -174,7 +176,7 @@ export default function DynamicAccessKeysList() {
                         startContent={<PlusIcon size={20} />}
                         variant="shadow"
                     >
-                        Create
+                        အသစ်လုပ်မယ်
                     </Button>
                 </div>
 
@@ -189,6 +191,7 @@ export default function DynamicAccessKeysList() {
                                     </span>
                                 </div>
                             </CardHeader>
+
                             <CardBody className="text-sm grid gap-2">
                                 <div className="flex gap-1 justify-between items-center">
                                     <span>ID</span>
@@ -198,7 +201,7 @@ export default function DynamicAccessKeysList() {
                                 </div>
 
                                 <div className="flex gap-1 justify-between items-center">
-                                    <span>Management type</span>
+                                    <span>စီမံခန့်ခွဲမှု အမျိုးအစား</span>
                                     {item.isSelfManaged ? (
                                         <Chip color="secondary" radius="sm" size="sm" variant="flat">
                                             Self-Managed
@@ -211,12 +214,12 @@ export default function DynamicAccessKeysList() {
                                 </div>
 
                                 <div className="flex gap-1 justify-between items-center">
-                                    <span>Data usage</span>
+                                    <span>Data အသုံးပြုမှု</span>
                                     <DynamicAccessKeyDataUsageChip item={item} />
                                 </div>
 
                                 <div className="flex gap-1 justify-between items-center">
-                                    <span>Number of keys</span>
+                                    <span>Key အရေအတွက်</span>
                                     <Chip
                                         color="default"
                                         radius="sm"
@@ -229,7 +232,7 @@ export default function DynamicAccessKeysList() {
                                 </div>
 
                                 <div className="flex gap-1 justify-between items-center">
-                                    <span>Load balancer</span>
+                                    <span>Load Balancer</span>
                                     <Chip color="default" radius="sm" size="sm" variant="flat">
                                         {item.loadBalancerAlgorithm}
                                     </Chip>
@@ -243,15 +246,16 @@ export default function DynamicAccessKeysList() {
                                         size="sm"
                                         variant="flat"
                                     >
-                                        {item.prefix ? item.prefix : "None"}
+                                        {item.prefix ? item.prefix : "မရှိပါ"}
                                     </Chip>
                                 </div>
 
                                 <div className="flex gap-1 justify-between items-center">
-                                    <span>Validity</span>
+                                    <span>သက်တမ်း (Validity)</span>
                                     <DynamicAccessKeyValidityChip dak={item} />
                                 </div>
                             </CardBody>
+
                             <CardFooter>
                                 <ButtonGroup color="default" fullWidth={true} size="sm" variant="flat">
                                     <Button
@@ -260,7 +264,7 @@ export default function DynamicAccessKeysList() {
                                             dynamicAccessKeyModalDisclosure.onOpen();
                                         }}
                                     >
-                                        Share
+                                        မျှဝေမယ်
                                     </Button>
 
                                     {item.isSelfManaged ? (
@@ -279,7 +283,7 @@ export default function DynamicAccessKeysList() {
                                     )}
 
                                     <Button as={Link} href={`/dynamic-access-keys/${item.id}/edit`}>
-                                        Edit
+                                        ပြင်မယ်
                                     </Button>
 
                                     <Button
@@ -289,7 +293,7 @@ export default function DynamicAccessKeysList() {
                                             deleteConfirmModalDisclosure.onOpen();
                                         }}
                                     >
-                                        Delete
+                                        ဖျက်မယ်
                                     </Button>
                                 </ButtonGroup>
                             </CardFooter>
