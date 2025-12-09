@@ -69,48 +69,48 @@ export default function HealthCheckEditForm({ healthCheck, notificationChannels 
                     </div>
                 }
                 disclosure={errorModalDisclosure}
-                title="Error!"
+                title="အမှား!"
             />
             <div className="grid gap-6">
                 <section className="flex justify-start items-center gap-2">
-                    <Tooltip closeDelay={100} color="default" content="Health checks" delay={600} size="sm">
+                    <Tooltip closeDelay={100} color="default" content="Health Checks" delay={600} size="sm">
                         <Button isIconOnly as={Link} href="/health-checks" size="sm" variant="light">
                             <ArrowLeftIcon size={20} />
                         </Button>
                     </Tooltip>
 
-                    <h1 className="text-xl">Health Check Details</h1>
+                    <h1 className="text-xl">Health Check အသေးစိတ်</h1>
                 </section>
 
                 <form className="w-full max-w-[464px] grid gap-4" onSubmit={handleSubmit(actualSubmit)}>
                     <Input
                         color="primary"
-                        description="Time (in minutes) between each server status check"
+                        description="ဆာဗာ အခြေအနေကို စစ်ဆေးမည့် ကြားကာလ (မိနစ်ဖြင့်)"
                         errorMessage={formState.errors.interval?.message}
                         isInvalid={!!formState.errors.interval}
-                        label="Interval"
+                        label="ကြားကာလ (Interval)"
                         max={10000}
                         min={1}
-                        placeholder="e.g. 5"
+                        placeholder="ဥပမာ 5"
                         type="number"
                         variant="underlined"
-                        {...register("interval", { valueAsNumber: true, required: "Interval is required" })}
+                        {...register("interval", { valueAsNumber: true, required: "ကြားကာလ ထည့်ပါ။" })}
                     />
 
                     <Input
                         color="primary"
-                        description="Time (in minutes) to wait before sending another notification"
+                        description="နောက်ထပ် အသိပေးချက် ပို့မည့်အထိ စောင့်ရသော အချိန် (မိနစ်ဖြင့်)"
                         errorMessage={formState.errors.notificationCooldown?.message}
                         isInvalid={!!formState.errors.notificationCooldown}
-                        label="Notification cooldown"
+                        label="အသိပေးချက် စောင့်ချိန် (Cooldown)"
                         max={10000}
                         min={1}
-                        placeholder="e.g. 5"
+                        placeholder="ဥပမာ 5"
                         type="number"
                         variant="underlined"
                         {...register("notificationCooldown", {
                             valueAsNumber: true,
-                            required: "Notification cooldown is required"
+                            required: "အသိပေးချက် စောင့်ချိန် ထည့်ပါ။"
                         })}
                     />
 
@@ -120,14 +120,14 @@ export default function HealthCheckEditForm({ healthCheck, notificationChannels 
                             name="notificationChannelId"
                             render={({ field }) => (
                                 <RadioGroup
-                                    label="Notification channel"
+                                    label="အသိပေးချက် Channel"
                                     value={field.value?.toString() ?? "0"}
                                     onChange={field.onChange}
                                 >
                                     {[NoNotificationChannel, ...notificationChannels].map((channel) => (
                                         <Radio key={channel.id} value={channel.id.toString()}>
-                                            {channel.name} ({channel.type === "None" ? "No Notification" : channel.type}
-                                            )
+                                            {channel.name} (
+                                            {channel.type === "None" ? "အသိပေးချက် မရှိပါ" : channel.type})
                                         </Radio>
                                     ))}
                                 </RadioGroup>
@@ -135,9 +135,9 @@ export default function HealthCheckEditForm({ healthCheck, notificationChannels 
                         />
                     ) : (
                         <Alert color="warning" hideIcon={true}>
-                            You do not have any notification channel.{" "}
+                            သင့်မှာ အသိပေးချက် Channel မရှိသေးပါ။{" "}
                             <Link className="contents" href={`/notification-channels/create?return=${pathname}`}>
-                                Create one
+                                အသစ်ဖန်တီးမယ်
                             </Link>
                         </Alert>
                     )}
@@ -148,7 +148,7 @@ export default function HealthCheckEditForm({ healthCheck, notificationChannels 
                         type="submit"
                         variant="shadow"
                     >
-                        Save
+                        သိမ်းမယ်
                     </Button>
                 </form>
             </div>
