@@ -186,18 +186,21 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                     </div>
                 }
                 disclosure={errorModalDisclosure}
-                title="Error!"
+                title="အမှား!"
             />
+
             <div className="grid gap-6 p-2">
                 <section className="flex justify-start items-center gap-2">
-                    <Tooltip closeDelay={100} color="default" content="Dynamic access keys" delay={600} size="sm">
+                    <Tooltip closeDelay={100} color="default" content="Dynamic Access Keys" delay={600} size="sm">
                         <Button isIconOnly as={Link} href="/dynamic-access-keys" size="sm" variant="light">
                             <ArrowLeftIcon size={20} />
                         </Button>
                     </Tooltip>
 
                     <h1 className="text-xl">
-                        {dynamicAccessKey ? `Dynamic Access Key "${dynamicAccessKey.name}"` : "New Dynamic Access Key"}
+                        {dynamicAccessKey
+                            ? `Dynamic Access Key "${dynamicAccessKey.name}"`
+                            : "Dynamic Access Key အသစ်ဖန်တီးရန်"}
                     </h1>
                 </section>
 
@@ -205,31 +208,32 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                     <Input
                         errorMessage={form.formState.errors.name?.message}
                         isInvalid={!!form.formState.errors.name}
-                        label="Dynamic access key name"
+                        label="Dynamic Access Key အမည်"
+                        placeholder="ဥပမာ - My Dynamic Key"
                         size="sm"
                         variant="underlined"
                         {...form.register("name", {
-                            required: "Name is required",
+                            required: "အမည်ထည့်ရန်လိုပါတယ်",
                             maxLength: {
                                 value: 64,
-                                message: "The name cannot be more than 64 character"
+                                message: "အမည်သည် အများဆုံး 64 လုံးသာရပါမယ်"
                             }
                         })}
                     />
 
                     <Input
-                        description="The path will be automatically generated if you leave this field empty"
+                        description="မထည့်ပါက Path ကို စနစ်က အလိုအလျောက် ဖန်တီးပေးပါမယ်"
                         errorMessage={form.formState.errors.path?.message}
                         isInvalid={!!form.formState.errors.path}
-                        label="Custom path (optional)"
-                        placeholder="e.g. /dummy-dum-dummo"
+                        label="Custom Path (မဖြစ်မနေမဟုတ်)"
+                        placeholder="ဥပမာ - /dummy-dum-dummo"
                         size="sm"
                         variant="underlined"
                         {...form.register("path", {
                             required: false,
                             maxLength: {
                                 value: 120,
-                                message: "The name cannot be more than 120 character"
+                                message: "Path အမည်သည် အများဆုံး 120 လုံးသာရပါမယ်"
                             }
                         })}
                     />
@@ -240,18 +244,18 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                 color="primary"
                                 errorMessage={form.formState.errors.validityPeriod?.message}
                                 isInvalid={!!form.formState.errors.validityPeriod}
-                                label="Validity period (in days)"
-                                placeholder="e.g. 30"
+                                label="သက်တမ်း (ရက်အလိုက်)"
+                                placeholder="ဥပမာ - 30"
                                 type="number"
                                 variant="underlined"
                                 {...form.register("validityPeriod", {
                                     max: {
                                         value: 10000,
-                                        message: "The value must be less than 1000"
+                                        message: "တန်ဖိုးသည် 10000 ထက် မကြီးရပါ"
                                     },
                                     min: {
                                         value: 1,
-                                        message: "The value must be greater than 1"
+                                        message: "တန်ဖိုးသည် 1 ထက် ကြီးရပါမယ်"
                                     }
                                 })}
                             />
@@ -259,13 +263,13 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                             {!dynamicAccessKey && (
                                 <RadioGroup
                                     defaultValue="now"
-                                    label="Usage start date"
+                                    label="အသုံးပြုမှု စတင်သတ်မှတ်မည့်ရက်"
                                     onValueChange={(v) => {
                                         form.setValue("setUsageDateOnFirstConnection", v === "first-connection");
                                     }}
                                 >
-                                    <Radio value="now">Set on creation</Radio>
-                                    <Radio value="first-connection">Set on first connection</Radio>
+                                    <Radio value="now">ဖန်တီးပြီးချင်း စတင်မယ်</Radio>
+                                    <Radio value="first-connection">ပထမဆုံး ချိတ်ဆက်တဲ့အချိန်မှ စမယ်</Radio>
                                 </RadioGroup>
                             )}
                         </>
@@ -280,12 +284,13 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                 size="lg"
                                 variant="faded"
                                 onPress={() => setSelectedExpirationDate(undefined)}
+                                aria-label="သက်တမ်းကုန်ရက် ဖျက်မယ်"
                             >
                                 <DeleteIcon size={18} />
                             </Button>
 
                             <CustomDatePicker
-                                label="Expiration Date:"
+                                label="သက်တမ်းကုန်ရက်:"
                                 value={selectedExpirationDate}
                                 onChange={(value) => setSelectedExpirationDate(value)}
                             />
@@ -302,8 +307,8 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                 variant="ghost"
                             >
                                 {selectedLoadBalancer
-                                    ? `Selected algo: ${selectedLoadBalancer}`
-                                    : "Load balancer algorithm"}
+                                    ? `ရွေးထားတဲ့ Algo: ${selectedLoadBalancer}`
+                                    : "Load Balancer Algorithm ရွေးပါ"}
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
@@ -333,7 +338,7 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                 type="button"
                                 variant="ghost"
                             >
-                                {selectedPrefix ? `Selected prefix: ${selectedPrefix}` : "Prefix"}
+                                {selectedPrefix ? `ရွေးထားတဲ့ Prefix: ${selectedPrefix}` : "Prefix ရွေးပါ"}
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
@@ -353,7 +358,7 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                     {selectedPrefix && (
                         <div className="grid gap-2">
                             <Divider className="opacity-65" />
-                            <span>Prefix recommended ports:</span>
+                            <span>ဒီ Prefix အတွက် အကြံပြု Port တွே —</span>
                             <div className="flex flex-wrap gap-2 rounded-xl p-4 bg-content2">
                                 {AccessKeyPrefixes.find(
                                     (x) => x.type.toString() === selectedPrefix
@@ -368,22 +373,21 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
 
                     <RadioGroup
                         defaultValue={isSelfManaged ? "self-managed" : "manual"}
-                        label="Management Type"
+                        label="စီမံခန့်ခွဲမှု ပုံစံ"
                         onValueChange={(v) => form.setValue("isSelfManaged", v === "self-managed")}
                     >
-                        <Radio value="manual">Manual</Radio>
-                        <Radio value="self-managed">Self-Managed</Radio>
+                        <Radio value="manual">Manual (ကိုယ်တိုင်စီမံ)</Radio>
+                        <Radio value="self-managed">Self-Managed (စနစ်က စီမံ)</Radio>
                     </RadioGroup>
 
                     <ul className="p-4 grid gap-2 rounded-xl bg-content2 text-foreground-500">
                         <li>
-                            <strong className="text-warning">Manual:</strong> You’ll need to assign and remove access
-                            keys yourself. This option gives you full control, but requires more effort.
+                            <strong className="text-warning">Manual:</strong> Access Key တွေကို ကိုယ်တိုင်ပဲ
+                            ထည့်/ဖျက်/စီမံရပါမယ်။ Control အပြည့်ရပေမယ့် အလုပ်ပိုလုပ်ရပါတယ်။
                         </li>
                         <li>
-                            <strong className="text-warning">Self-Managed:</strong> You’ll set up a server pool, and the
-                            system will automatically handle access key management for you. This option is easier to
-                            maintain once configured.
+                            <strong className="text-warning">Self-Managed:</strong> Server Pool ကို တစ်ခါတည်းသတ်မှတ်ပြီး
+                            စနစ်က Access Key တွေကို အလိုအလျောက် စီမံပေးပါမယ်။ တစ်ခါထည့်ပြီးရင် လွယ်ကူပါတယ်။
                         </li>
                     </ul>
 
@@ -395,7 +399,8 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                 endContent={<span>MB</span>}
                                 errorMessage={form.formState.errors.dataLimit?.message}
                                 isInvalid={!!form.formState.errors.dataLimit}
-                                label="Data limit"
+                                label="ဒေတာကန့်သတ်ချက်"
+                                placeholder="ဥပမာ - 1024"
                                 size="sm"
                                 type="number"
                                 variant="underlined"
@@ -404,7 +409,7 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                     min: 1,
                                     max: {
                                         value: MAX_DATA_LIMIT_FOR_ACCESS_KEYS,
-                                        message: `The value cannot be more that ${MAX_DATA_LIMIT_FOR_ACCESS_KEYS}`
+                                        message: `တန်ဖိုးသည် ${MAX_DATA_LIMIT_FOR_ACCESS_KEYS} ထက် မကြီးရပါ`
                                     },
                                     setValueAs: (v) => parseInt(v)
                                 })}
@@ -412,25 +417,24 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
 
                             <RadioGroup
                                 defaultValue={serverPoolType}
-                                label="Server Pool Type"
+                                label="Server Pool ပုံစံ"
                                 onValueChange={(v) => {
                                     form.setValue("serverPoolType", v);
                                     form.setValue("serverPoolValue", null);
                                 }}
                             >
-                                <Radio value="manual">Manual</Radio>
-                                <Radio value="tag">Tag (Recommended)</Radio>
+                                <Radio value="manual">Manual (ကိုယ်တိုင်ရွေး)</Radio>
+                                <Radio value="tag">Tag နဲ့ရွေး (အကြံပြု)</Radio>
                             </RadioGroup>
 
                             <ul className="p-4 grid gap-2 rounded-xl bg-content2 text-foreground-500">
                                 <li>
-                                    <strong className="text-warning">Manual:</strong> You’ll manually select which
-                                    servers belong to this pool. This gives you full control over the pool’s
-                                    composition.
+                                    <strong className="text-warning">Manual:</strong> Pool ထဲထည့်မယ့် Server တွေကို
+                                    ကိုယ်တိုင် ရွေးရပါမယ်။
                                 </li>
                                 <li>
-                                    <strong className="text-warning">Tag (Recommended):</strong> The system will
-                                    automatically include servers that match the specified tags.
+                                    <strong className="text-warning">Tag (အကြံပြု):</strong> သတ်မှတ်ထားတဲ့ Tag တွေ
+                                    ပါတဲ့ Server တွေကို စနစ်က အလိုအလျောက် Pool ထဲထည့်ပေးပါမယ်။
                                 </li>
                             </ul>
 
@@ -440,10 +444,9 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
 
                                     <CheckboxGroup
                                         defaultValue={serverPoolValue}
-                                        label="Select Servers"
+                                        label="Pool ထဲထည့်မယ့် Server ကိုရွေးပါ"
                                         onValueChange={(values) => {
                                             const ids = values.map((x) => parseInt(x));
-
                                             form.setValue("serverPoolValue", JSON.stringify(ids));
                                         }}
                                     >
@@ -473,7 +476,7 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                                                             size="sm"
                                                             variant="flat"
                                                         >
-                                                            {server.isAvailable ? "Available" : "Not Available"}
+                                                            {server.isAvailable ? "ရရှိနိုင်" : "မရရှိနိုင်"}
                                                         </Chip>
                                                     </div>
                                                 </div>
@@ -489,10 +492,9 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
 
                                     <CheckboxGroup
                                         defaultValue={serverPoolValue}
-                                        label="Select Tags"
+                                        label="Pool အတွက် Tag ရွေးပါ"
                                         onValueChange={(values) => {
                                             const ids = values.map((x) => parseInt(x));
-
                                             form.setValue("serverPoolValue", JSON.stringify(ids));
                                         }}
                                     >
@@ -513,7 +515,7 @@ export default function DynamicAccessKeyForm({ dynamicAccessKey, tags, servers }
                         type="submit"
                         variant="shadow"
                     >
-                        Save
+                        သိမ်းမယ်
                     </Button>
                 </form>
             </div>
