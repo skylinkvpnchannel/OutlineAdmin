@@ -18,13 +18,19 @@ export default function DynamicAccessKeyDataUsageChip({ item }: Props) {
     return (
         <Chip color={isExceeded ? "danger" : "default"} radius="sm" size="sm" variant="flat">
             <div className="flex gap-2 items-center">
+                {/* လက်ရှိ သုံးပြီးသားဒေတာ */}
                 <span>{formatBytes(Number(item.dataUsage))}</span>
 
+                {/* Self-Managed ဖြစ်မှ limit ပြ */}
                 {item.isSelfManaged && (
                     <>
-                        <span className="text-default-500">of</span>
+                        <span className="text-default-500">မှ</span>
                         {item.dataLimit ? (
-                            <span>{formatBytes(convertDataLimitToUnit(Number(item.dataLimit), DataLimitUnit.MB))}</span>
+                            <span>
+                                {formatBytes(
+                                    convertDataLimitToUnit(Number(item.dataLimit), DataLimitUnit.MB)
+                                )}
+                            </span>
                         ) : (
                             <InfinityIcon size={20} />
                         )}
