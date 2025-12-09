@@ -1,5 +1,15 @@
+"use client";
+
 import { UseDisclosureReturn } from "@heroui/use-disclosure";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Snippet } from "@heroui/react";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    Snippet
+} from "@heroui/react";
 import React, { useEffect, useRef } from "react";
 
 import { CopyIcon } from "@/src/components/icons";
@@ -12,40 +22,70 @@ interface Props {
 
 export default function DynamicAccessKeyModal({ disclosure, value }: Props) {
     const qrCodeContainerRef = useRef<HTMLDivElement>(null);
-
     const qrCode = useQrCode(qrCodeContainerRef);
 
     useEffect(() => {
         if (disclosure.isOpen) {
             qrCode(value);
         }
-    }, [disclosure.isOpen]);
+    }, [disclosure.isOpen, value, qrCode]);
 
     return (
-        <Modal isOpen={disclosure.isOpen} onOpenChange={disclosure.onOpenChange}>
+        <Modal
+            isOpen={disclosure.isOpen}
+            onOpenChange={disclosure.onOpenChange}
+            placement="center"
+            backdrop="blur"
+            classNames={{
+                base: "rounded-2xl shadow-2xl border border-default-200/60 bg-content1/95",
+                header: "pb-2",
+                body: "pt-2",
+                footer: "pt-2"
+            }}
+        >
             <ModalContent>
-                <ModalHeader>🗝️ Dynamic Access Key</ModalHeader>
-                <ModalBody>
-                    <div className="flex justify-center mb-4">
-                        <div ref={qrCodeContainerRef} className="rounded-xl overflow-hidden bg-default-100" />
+                <ModalHeader className="flex items-center gap-2">
+                    <div className="grid">
+                        <div className="text-lg font-semibold">🗝️ Dynamic Access Key</div>
+                        <div className="text-xs text-default-500">
+                            ဒီ key ကို QR နဲ့ Scan လုပ်ပြီး share လို့ရပါတယ်
+                        </div>
+                    </div>
+                </ModalHeader>
+
+                <ModalBody className="grid gap-4">
+                    <div className="flex justify-center">
+                        <div
+                            ref={qrCodeContainerRef}
+                            className="rounded-2xl overflow-hidden bg-default-100 p-2 shadow-sm"
+                        />
                     </div>
 
                     <Snippet
                         classNames={{
-                            base: "!max-w-[280px] md:!max-w-[700px]",
-                            copyButton: "text-sm !min-w-6 !w-6 h-6",
+                            base: "!max-w-[280px] md:!max-w-[700px] rounded-xl bg-default-50/60",
+                            copyButton: "text-sm !min-w-6 !w-6 h-6 rounded-lg",
                             pre: "!ps-1 truncate"
                         }}
                         copyIcon={<CopyIcon size={16} />}
-                        hideSymbol={true}
+                        hideSymbol
                         variant="flat"
                     >
-                        {value}
+                        {value ?? "—"}
                     </Snippet>
+
+                    <p className="text-xs text-default-500 text-center">
+                        Copy လုပ်ပြီး Client app ထဲထည့်လို့ရပါတယ်
+                    </p>
                 </ModalBody>
-                <ModalFooter>
-                    <Button variant="flat" onPress={disclosure.onClose}>
-                        Ok
+
+                <ModalFooter className="flex justify-end">
+                    <Button
+                        variant="shadow"
+                        className="rounded-xl font-semibold"
+                        onPress={disclosure.onClose}
+                    >
+                        အိုကေ
                     </Button>
                 </ModalFooter>
             </ModalContent>
