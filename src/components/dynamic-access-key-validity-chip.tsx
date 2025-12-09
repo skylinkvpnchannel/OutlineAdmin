@@ -29,18 +29,21 @@ export default function DynamicAccessKeyValidityChip({ dak }: Props) {
         return () => clearInterval(intervalId);
     }, [expiryDate]);
 
+    // သတ်မှတ်ထားတဲ့ expiresAt ရှိရင် အရင်က component ကိုပဲ သုံး
     if (dak.expiresAt) {
         return <AccessKeyValidityChip value={dak.expiresAt} />;
     }
 
+    // validityPeriod ရှိပြီး usage မစသေးရင်
     if (!dak.usageStartedAt && dak.validityPeriod) {
         return (
             <Chip color="primary" radius="sm" size="sm" variant="flat">
-                NOT STARTED
+                မစသေးပါ
             </Chip>
         );
     }
 
+    // validityPeriod မသတ်မှတ်ထားရင် အကန့်အသတ်မရှိ
     if (!dak.validityPeriod) {
         return (
             <Chip color="success" radius="sm" size="sm" variant="flat">
@@ -49,14 +52,16 @@ export default function DynamicAccessKeyValidityChip({ dak }: Props) {
         );
     }
 
+    // သက်တမ်းကုန်ပြီးသား
     if (expiryDate && expiryDate <= new Date()) {
         return (
             <Chip color="danger" radius="sm" size="sm" variant="flat">
-                <span>EXPIRED</span>
+                <span>သက်တမ်းကုန်ပြီ</span>
             </Chip>
         );
     }
 
+    // လက်ရှိကျန်တဲ့အချိန်
     return (
         <Chip color="warning" radius="sm" size="sm" variant="flat">
             <span>{duration}</span>
